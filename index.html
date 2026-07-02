@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Classroom Clock Card Maker</title>
+  <meta name="description" content="Create accurate printable analog clock labels for visual schedules.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <h1>Classroom Clock Card Maker</h1>
+      <p>Create accurate printable analog clock labels for visual schedules.</p>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="controls-panel" aria-labelledby="controls-title">
+      <h2 id="controls-title">Schedule and settings</h2>
+      <p class="instructions">Enter one time per line, or write an activity and time separated by a pipe or dash.</p>
+
+      <label for="scheduleInput">Schedule lines</label>
+      <textarea id="scheduleInput" rows="16" spellcheck="false"></textarea>
+
+      <div class="button-row">
+        <button type="button" id="generateButton">Generate Cards</button>
+        <button type="button" id="printButton">Print / Save as PDF</button>
+        <button type="button" id="resetButton" class="secondary-button">Reset Sample</button>
+      </div>
+
+      <fieldset>
+        <legend>Card layout</legend>
+        <label for="cardSize">Card size</label>
+        <select id="cardSize">
+          <option value="small">Small: 3.0in × 1.0in</option>
+          <option value="medium">Medium: 3.5in × 1.25in</option>
+          <option value="large">Large: 4.0in × 1.5in</option>
+        </select>
+
+        <label for="columns">Columns</label>
+        <select id="columns">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+
+        <label for="layout">Card content layout</label>
+        <select id="layout">
+          <option value="row">Clock left / time right</option>
+          <option value="stack">Clock above / time below</option>
+          <option value="clock-only">Clock only</option>
+          <option value="time-only">Time only</option>
+        </select>
+
+        <label for="clockSize">Clock size: <span id="clockSizeValue">0.82in</span></label>
+        <input id="clockSize" type="range" min="0.6" max="1.2" step="0.01" value="0.82">
+      </fieldset>
+
+      <fieldset>
+        <legend>Display options</legend>
+        <label class="check-label"><input id="showActivities" type="checkbox"> Show activity labels</label>
+        <label class="check-label"><input id="showBorders" type="checkbox"> Show card borders</label>
+        <label class="check-label"><input id="showCutLines" type="checkbox"> Show dashed cut lines</label>
+        <label class="check-label"><input id="showTicks" type="checkbox"> Show minute tick marks</label>
+        <label class="check-label"><input id="showNumerals" type="checkbox"> Show numerals</label>
+        <label class="check-label"><input id="showEnteredAmPm" type="checkbox"> Show AM/PM if entered</label>
+        <label class="check-label"><input id="forceAmPm" type="checkbox"> Force AM/PM labels</label>
+        <p class="hint">Force AM/PM labels requires accurate AM/PM input. Lines without AM/PM are marked so you can fix them.</p>
+      </fieldset>
+
+      <div id="messages" class="messages" aria-live="polite"></div>
+    </section>
+
+    <section class="preview-panel" aria-labelledby="preview-title">
+      <div class="preview-header">
+        <div>
+          <h2 id="preview-title">Printable cards</h2>
+          <p class="instructions">Preview uses physical units so it matches the printed page as closely as your browser allows.</p>
+        </div>
+      </div>
+      <div class="print-surface" id="printSurface">
+        <div id="cardsGrid" class="cards-grid" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>All clocks are drawn as programmatic SVG in your browser. No data leaves your device.</p>
+  </footer>
+</body>
+</html>
