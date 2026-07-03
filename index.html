@@ -19,35 +19,41 @@
 
   <main class="app-shell">
     <section class="controls-panel" aria-labelledby="controls-title">
-      <h2 id="controls-title">Schedule and settings</h2>
-      <p class="instructions">Enter one time per line, or write an activity and time separated by a pipe or dash.</p>
+      <h2 id="controls-title">Make clock cards</h2>
+      <p class="instructions">Type one schedule item per line. Use <strong>Activity 7:00</strong>, <strong>Activity - 7:00</strong>, or just <strong>7:00</strong>. The divider is optional.</p>
 
-      <label for="scheduleInput">Schedule lines</label>
-      <textarea id="scheduleInput" rows="16" spellcheck="false"></textarea>
+      <label for="scheduleInput">Schedule items</label>
+      <textarea id="scheduleInput" rows="12" spellcheck="false" aria-describedby="scheduleHelp"></textarea>
+      <p id="scheduleHelp" class="hint">Examples: Arrival 7:00, Breakfast - 8:30, Choice Time 9:00, or 10:15 AM.</p>
 
-      <div class="button-row">
+      <div class="button-row primary-actions" aria-label="Main actions">
         <button type="button" id="generateButton">Generate Cards</button>
         <button type="button" id="printButton">Print / Save as PDF</button>
         <button type="button" id="resetButton" class="secondary-button">Reset Sample</button>
       </div>
 
       <fieldset>
-        <legend>Card layout</legend>
-        <label for="cardSize">Card size</label>
-        <select id="cardSize">
-          <option value="small">Small: 3.0in × 1.0in</option>
-          <option value="medium">Medium: 3.5in × 1.25in</option>
-          <option value="large">Large: 4.0in × 1.5in</option>
-        </select>
+        <legend>Quick layout</legend>
+        <div class="two-column-controls">
+          <div>
+            <label for="cardSize">Card size</label>
+            <select id="cardSize">
+              <option value="small">Small: 3.0in × 1.0in</option>
+              <option value="medium">Medium: 3.5in × 1.25in</option>
+              <option value="large">Large: 4.0in × 1.5in</option>
+            </select>
+          </div>
+          <div>
+            <label for="columns">Columns</label>
+            <select id="columns">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+        </div>
 
-        <label for="columns">Columns</label>
-        <select id="columns">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
-
-        <label for="layout">Card content layout</label>
+        <label for="layout">Card style</label>
         <select id="layout">
           <option value="row">Clock left / time right</option>
           <option value="stack">Clock above / time below</option>
@@ -55,21 +61,39 @@
           <option value="time-only">Time only</option>
         </select>
 
-        <label for="clockSize">Clock size: <span id="clockSizeValue">0.82in</span></label>
-        <input id="clockSize" type="range" min="0.6" max="1.2" step="0.01" value="0.82">
+        <label for="edgeStyle">Cut or border line</label>
+        <select id="edgeStyle">
+          <option value="cut">Dashed cut line</option>
+          <option value="border">Solid card border</option>
+          <option value="none">No outside line</option>
+        </select>
       </fieldset>
 
       <fieldset>
-        <legend>Display options</legend>
-        <label class="check-label"><input id="showActivities" type="checkbox"> Show activity labels</label>
-        <label class="check-label"><input id="showBorders" type="checkbox"> Show card borders</label>
-        <label class="check-label"><input id="showCutLines" type="checkbox"> Show dashed cut lines</label>
-        <label class="check-label"><input id="showTicks" type="checkbox"> Show minute tick marks</label>
-        <label class="check-label"><input id="showNumerals" type="checkbox"> Show numerals</label>
-        <label class="check-label"><input id="showEnteredAmPm" type="checkbox"> Show AM/PM if entered</label>
-        <label class="check-label"><input id="forceAmPm" type="checkbox"> Force AM/PM labels</label>
-        <p class="hint">Force AM/PM labels requires accurate AM/PM input. Lines without AM/PM are marked so you can fix them.</p>
+        <legend>Readable sizing</legend>
+        <label for="clockSize">Clock size: <span id="clockSizeValue">0.82in</span></label>
+        <input id="clockSize" type="range" min="0.6" max="1.2" step="0.01" value="0.82">
+
+        <label for="timeFontSize">Time font size: <span id="timeFontSizeValue">30px</span></label>
+        <input id="timeFontSize" type="range" min="20" max="42" step="1" value="30">
+
+        <label for="activityFontSize">Activity font size: <span id="activityFontSizeValue">11px</span></label>
+        <input id="activityFontSize" type="range" min="8" max="16" step="1" value="11">
+        <p class="hint">Cards keep overflow hidden so larger text stays inside each printed label. If text is clipped, choose a larger card or smaller font.</p>
       </fieldset>
+
+      <details class="advanced-settings">
+        <summary>Advanced options</summary>
+        <fieldset>
+          <legend>Display details</legend>
+          <label class="check-label"><input id="showActivities" type="checkbox"> Show activity labels</label>
+          <label class="check-label"><input id="showTicks" type="checkbox"> Show minute tick marks</label>
+          <label class="check-label"><input id="showNumerals" type="checkbox"> Show numerals</label>
+          <label class="check-label"><input id="showEnteredAmPm" type="checkbox"> Show AM/PM if entered</label>
+          <label class="check-label"><input id="forceAmPm" type="checkbox"> Force AM/PM labels</label>
+          <p class="hint">Force AM/PM labels requires accurate AM/PM input. Lines without AM/PM are marked so you can fix them.</p>
+        </fieldset>
+      </details>
 
       <div id="messages" class="messages" aria-live="polite"></div>
     </section>
@@ -78,7 +102,7 @@
       <div class="preview-header">
         <div>
           <h2 id="preview-title">Printable cards</h2>
-          <p class="instructions">Preview uses physical units so it matches the printed page as closely as your browser allows.</p>
+          <p class="instructions">Cards are sized in inches for print. On phones, scroll sideways to inspect the page preview.</p>
         </div>
       </div>
       <div class="print-surface" id="printSurface">

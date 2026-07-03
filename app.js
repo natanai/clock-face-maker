@@ -29,10 +29,11 @@ const defaults = {
   cardSize: 'medium',
   columns: '2',
   clockSize: '0.82',
+  timeFontSize: '30',
+  activityFontSize: '11',
   layout: 'row',
+  edgeStyle: 'cut',
   showActivities: true,
-  showBorders: true,
-  showCutLines: true,
   showTicks: true,
   showNumerals: true,
   showEnteredAmPm: true,
@@ -51,7 +52,7 @@ function init() {
 }
 
 function cacheElements() {
-  ['scheduleInput', 'generateButton', 'printButton', 'resetButton', 'cardSize', 'columns', 'layout', 'clockSize', 'clockSizeValue', 'showActivities', 'showBorders', 'showCutLines', 'showTicks', 'showNumerals', 'showEnteredAmPm', 'forceAmPm', 'messages', 'cardsGrid'].forEach((id) => {
+  ['scheduleInput', 'generateButton', 'printButton', 'resetButton', 'cardSize', 'columns', 'layout', 'edgeStyle', 'clockSize', 'clockSizeValue', 'timeFontSize', 'timeFontSizeValue', 'activityFontSize', 'activityFontSizeValue', 'showActivities', 'showTicks', 'showNumerals', 'showEnteredAmPm', 'forceAmPm', 'messages', 'cardsGrid'].forEach((id) => {
     els[id] = document.getElementById(id);
   });
 }
@@ -59,14 +60,18 @@ function cacheElements() {
 function loadState() {
   const saved = safeJsonParse(localStorage.getItem(STORAGE_KEY));
   const state = { ...defaults, ...(saved || {}) };
+  if (saved && !saved.edgeStyle) {
+    state.edgeStyle = saved.showBorders ? 'border' : (saved.showCutLines ? 'cut' : 'none');
+  }
   els.scheduleInput.value = state.schedule;
   els.cardSize.value = state.cardSize;
   els.columns.value = state.columns;
   els.layout.value = state.layout;
+  els.edgeStyle.value = state.edgeStyle;
   els.clockSize.value = state.clockSize;
+  els.timeFontSize.value = state.timeFontSize;
+  els.activityFontSize.value = state.activityFontSize;
   els.showActivities.checked = state.showActivities;
-  els.showBorders.checked = state.showBorders;
-  els.showCutLines.checked = state.showCutLines;
   els.showTicks.checked = state.showTicks;
   els.showNumerals.checked = state.showNumerals;
   els.showEnteredAmPm.checked = state.showEnteredAmPm;
@@ -83,10 +88,11 @@ function getSettings() {
     cardSize: els.cardSize.value,
     columns: els.columns.value,
     layout: els.layout.value,
+    edgeStyle: els.edgeStyle.value,
     clockSize: els.clockSize.value,
+    timeFontSize: els.timeFontSize.value,
+    activityFontSize: els.activityFontSize.value,
     showActivities: els.showActivities.checked,
-    showBorders: els.showBorders.checked,
-    showCutLines: els.showCutLines.checked,
     showTicks: els.showTicks.checked,
     showNumerals: els.showNumerals.checked,
     showEnteredAmPm: els.showEnteredAmPm.checked,
@@ -115,10 +121,11 @@ function loadDefaultsIntoControls() {
   els.cardSize.value = defaults.cardSize;
   els.columns.value = defaults.columns;
   els.layout.value = defaults.layout;
+  els.edgeStyle.value = defaults.edgeStyle;
   els.clockSize.value = defaults.clockSize;
+  els.timeFontSize.value = defaults.timeFontSize;
+  els.activityFontSize.value = defaults.activityFontSize;
   els.showActivities.checked = defaults.showActivities;
-  els.showBorders.checked = defaults.showBorders;
-  els.showCutLines.checked = defaults.showCutLines;
   els.showTicks.checked = defaults.showTicks;
   els.showNumerals.checked = defaults.showNumerals;
   els.showEnteredAmPm.checked = defaults.showEnteredAmPm;
@@ -156,7 +163,7 @@ function parseScheduleInput(text) {
 function parseLine(line) {
   const timeAtEnd = /(.*?)(?:\s*(?:\||-|—)\s*)?((?:[01]?\d|2[0-3]):[0-5]?\d\s*(?:[AaPp]\.?[Mm]\.?)?)$/;
   const match = line.match(timeAtEnd);
-  if (!match) return { error: `Could not find a valid time in “${line}”. Use formats like 7:00 or Arrival | 7:00.` };
+  if (!match) return { error: `Could not find a valid time in “${line}”. Use formats like 7:00, Arrival 7:00, or Arrival - 7:00.` };
   const activity = match[1].replace(/[|—-]\s*$/, '').trim();
   const rawTime = match[2].trim();
   const parsedTime = parseTime(rawTime);
@@ -201,9 +208,7 @@ function generateCards(items) {
   els.cardsGrid.innerHTML = '';
   items.forEach((item) => {
     const card = document.createElement('article');
-    card.className = `clock-card layout-${settings.layout}`;
-    card.classList.toggle('show-cut-lines', settings.showCutLines);
-    card.classList.toggle('show-border', settings.showBorders);
+    card.className = `clock-card layout-${settings.layout} edge-${settings.edgeStyle}`;
     card.classList.toggle('no-activity', !settings.showActivities || !item.activity);
 
     const clockWrap = document.createElement('div');
@@ -281,7 +286,11 @@ function applySettingsToCss() {
   document.documentElement.style.setProperty('--card-height', size.height);
   document.documentElement.style.setProperty('--columns', els.columns.value);
   document.documentElement.style.setProperty('--clock-size', `${els.clockSize.value}in`);
+  document.documentElement.style.setProperty('--time-font-size', `${els.timeFontSize.value}px`);
+  document.documentElement.style.setProperty('--activity-font-size', `${els.activityFontSize.value}px`);
   els.clockSizeValue.textContent = `${Number(els.clockSize.value).toFixed(2)}in`;
+  els.timeFontSizeValue.textContent = `${els.timeFontSize.value}px`;
+  els.activityFontSizeValue.textContent = `${els.activityFontSize.value}px`; 
 }
 
 function showErrors(errors, count = currentItems.length) {

@@ -7,9 +7,9 @@ The app runs entirely in the browser with plain HTML, CSS, and JavaScript. There
 ## What it does
 
 - Turns schedule lines into printable clock cards.
-- Supports time-only entries such as `7:00` and activity entries such as `Arrival | 7:00`.
+- Supports time-only entries such as `7:00` and activity entries such as `Arrival 7:00`, `Arrival - 7:00`, or `Arrival | 7:00`; the divider is optional.
 - Draws every analog clock as crisp SVG using exact geometry.
-- Provides print-friendly card sizes for US Letter paper.
+- Provides print-friendly card sizes for US Letter paper and avoids page breaks inside individual cards.
 - Stores your text and settings in `localStorage` so they are available next time in the same browser.
 - Keeps all data on your device; nothing is uploaded or sent to a server.
 
@@ -30,13 +30,14 @@ The app runs entirely in the browser with plain HTML, CSS, and JavaScript. There
    ```text
    Arrival | 7:00
    Breakfast | 8:30
-   Choice Time - 9:00
+   Choice Time 9:00
    Outside Time — 4:15
    ```
 
-4. Choose card size, columns, clock size, and display options.
-5. Click **Generate Cards**.
-6. Click **Print / Save as PDF** and use your browser's print dialog.
+4. Choose card size, columns, edge style, clock size, and font sizes.
+5. Open **Advanced options** only if you need details such as hiding numerals, hiding tick marks, or changing AM/PM behavior.
+6. Click **Generate Cards**.
+7. Click **Print / Save as PDF** and use your browser's print dialog.
 
 ## Example schedule
 
