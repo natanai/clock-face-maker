@@ -4,6 +4,7 @@
   --clock-size: 0.82in;
   --time-font-size: 30px;
   --activity-font-size: 11px;
+  --site-font: Garamond, Georgia, serif;
   --columns: 2;
   --card-gap: 0.12in;
   --ink: #111;
@@ -12,7 +13,7 @@
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; color: var(--ink); background: #e9ecef; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.45; }
+body { margin: 0; color: var(--ink); background: #e9ecef; font-family: var(--site-font); line-height: 1.45; }
 .site-header, .site-footer { padding: 1.25rem clamp(1rem, 3vw, 2rem); background: var(--paper); border-bottom: 2px solid #d0d0d0; }
 .site-footer { border-top: 2px solid #d0d0d0; border-bottom: 0; }
 h1, h2 { margin: 0 0 .35rem; line-height: 1.1; }
@@ -30,7 +31,7 @@ summary { margin-top: 1rem; cursor: pointer; font-weight: 800; padding: .7rem; b
 .check-label { display: flex; gap: .5rem; align-items: start; font-weight: 600; margin: .5rem 0; }
 .two-column-controls { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
 .button-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
-button { border: 2px solid #111; border-radius: .35rem; background: #111; color: #fff; font: 700 1rem system-ui, sans-serif; padding: .6rem .8rem; cursor: pointer; }
+button { border: 2px solid #111; border-radius: .35rem; background: #111; color: #fff; font: 700 1rem var(--site-font); padding: .6rem .8rem; cursor: pointer; }
 button.secondary-button { background: #fff; color: #111; }
 button:focus-visible, textarea:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid #005fcc; outline-offset: 2px; }
 .messages { margin-top: 1rem; font-weight: 700; }

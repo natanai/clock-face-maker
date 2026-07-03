@@ -10,6 +10,7 @@ The app runs entirely in the browser with plain HTML, CSS, and JavaScript. There
 - Supports time-only entries such as `7:00` and activity entries such as `Arrival 7:00`, `Arrival - 7:00`, or `Arrival | 7:00`; the divider is optional.
 - Draws every analog clock as crisp SVG using exact geometry.
 - Provides print-friendly card sizes for US Letter paper and avoids page breaks inside individual cards.
+- Defaults to a Garamond-style font and includes web-safe font choices for matching classroom materials.
 - Stores your text and settings in `localStorage` so they are available next time in the same browser.
 - Keeps all data on your device; nothing is uploaded or sent to a server.
 
@@ -35,7 +36,7 @@ The app runs entirely in the browser with plain HTML, CSS, and JavaScript. There
    ```
 
 4. Choose card size, columns, edge style, clock size, and font sizes.
-5. Open **Advanced options** only if you need details such as hiding numerals, hiding tick marks, or changing AM/PM behavior.
+5. Open **Advanced options** only if you need details such as changing the web-safe font, adjusting clock outline thickness, hand widths, hand lengths, numeral size, center dot size, hiding numerals, hiding tick marks, or changing AM/PM behavior.
 6. Click **Generate Cards**.
 7. Click **Print / Save as PDF** and use your browser's print dialog.
 

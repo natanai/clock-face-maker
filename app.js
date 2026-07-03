@@ -31,6 +31,14 @@ const defaults = {
   clockSize: '0.82',
   timeFontSize: '30',
   activityFontSize: '11',
+  fontFamily: 'Garamond, Georgia, serif',
+  outerStrokeWidth: '3.5',
+  hourHandWidth: '6',
+  minuteHandWidth: '4',
+  hourHandLength: '26',
+  minuteHandLength: '36',
+  numeralSize: '10',
+  centerDotSize: '4',
   layout: 'row',
   edgeStyle: 'cut',
   showActivities: true,
@@ -52,7 +60,7 @@ function init() {
 }
 
 function cacheElements() {
-  ['scheduleInput', 'generateButton', 'printButton', 'resetButton', 'cardSize', 'columns', 'layout', 'edgeStyle', 'clockSize', 'clockSizeValue', 'timeFontSize', 'timeFontSizeValue', 'activityFontSize', 'activityFontSizeValue', 'showActivities', 'showTicks', 'showNumerals', 'showEnteredAmPm', 'forceAmPm', 'messages', 'cardsGrid'].forEach((id) => {
+  ['scheduleInput', 'generateButton', 'printButton', 'resetButton', 'cardSize', 'columns', 'layout', 'edgeStyle', 'clockSize', 'clockSizeValue', 'timeFontSize', 'timeFontSizeValue', 'activityFontSize', 'activityFontSizeValue', 'fontFamily', 'outerStrokeWidth', 'outerStrokeWidthValue', 'hourHandWidth', 'hourHandWidthValue', 'minuteHandWidth', 'minuteHandWidthValue', 'hourHandLength', 'hourHandLengthValue', 'minuteHandLength', 'minuteHandLengthValue', 'numeralSize', 'numeralSizeValue', 'centerDotSize', 'centerDotSizeValue', 'showActivities', 'showTicks', 'showNumerals', 'showEnteredAmPm', 'forceAmPm', 'messages', 'cardsGrid'].forEach((id) => {
     els[id] = document.getElementById(id);
   });
 }
@@ -71,6 +79,14 @@ function loadState() {
   els.clockSize.value = state.clockSize;
   els.timeFontSize.value = state.timeFontSize;
   els.activityFontSize.value = state.activityFontSize;
+  els.fontFamily.value = state.fontFamily;
+  els.outerStrokeWidth.value = state.outerStrokeWidth;
+  els.hourHandWidth.value = state.hourHandWidth;
+  els.minuteHandWidth.value = state.minuteHandWidth;
+  els.hourHandLength.value = state.hourHandLength;
+  els.minuteHandLength.value = state.minuteHandLength;
+  els.numeralSize.value = state.numeralSize;
+  els.centerDotSize.value = state.centerDotSize;
   els.showActivities.checked = state.showActivities;
   els.showTicks.checked = state.showTicks;
   els.showNumerals.checked = state.showNumerals;
@@ -92,6 +108,14 @@ function getSettings() {
     clockSize: els.clockSize.value,
     timeFontSize: els.timeFontSize.value,
     activityFontSize: els.activityFontSize.value,
+    fontFamily: els.fontFamily.value,
+    outerStrokeWidth: els.outerStrokeWidth.value,
+    hourHandWidth: els.hourHandWidth.value,
+    minuteHandWidth: els.minuteHandWidth.value,
+    hourHandLength: els.hourHandLength.value,
+    minuteHandLength: els.minuteHandLength.value,
+    numeralSize: els.numeralSize.value,
+    centerDotSize: els.centerDotSize.value,
     showActivities: els.showActivities.checked,
     showTicks: els.showTicks.checked,
     showNumerals: els.showNumerals.checked,
@@ -125,6 +149,14 @@ function loadDefaultsIntoControls() {
   els.clockSize.value = defaults.clockSize;
   els.timeFontSize.value = defaults.timeFontSize;
   els.activityFontSize.value = defaults.activityFontSize;
+  els.fontFamily.value = defaults.fontFamily;
+  els.outerStrokeWidth.value = defaults.outerStrokeWidth;
+  els.hourHandWidth.value = defaults.hourHandWidth;
+  els.minuteHandWidth.value = defaults.minuteHandWidth;
+  els.hourHandLength.value = defaults.hourHandLength;
+  els.minuteHandLength.value = defaults.minuteHandLength;
+  els.numeralSize.value = defaults.numeralSize;
+  els.centerDotSize.value = defaults.centerDotSize;
   els.showActivities.checked = defaults.showActivities;
   els.showTicks.checked = defaults.showTicks;
   els.showNumerals.checked = defaults.showNumerals;
@@ -239,7 +271,7 @@ function displayTimeForSettings(item, settings) {
 function createClockSvg(hour, minute, options = {}) {
   const svg = createSvgElement('svg', { viewBox: '0 0 100 100', role: 'img', 'aria-label': `${hour}:${String(minute).padStart(2, '0')} analog clock` });
   svg.append(createSvgElement('circle', { cx: 50, cy: 50, r: 47, fill: '#fff' }));
-  svg.append(createSvgElement('circle', { cx: 50, cy: 50, r: 45, fill: 'none', stroke: '#000', 'stroke-width': 3.5 }));
+  svg.append(createSvgElement('circle', { cx: 50, cy: 50, r: 45, fill: 'none', stroke: '#000', 'stroke-width': Number(options.outerStrokeWidth) || 3.5 }));
 
   if (options.showTicks) {
     for (let i = 0; i < 60; i += 1) {
@@ -253,7 +285,7 @@ function createClockSvg(hour, minute, options = {}) {
   if (options.showNumerals) {
     for (let n = 1; n <= 12; n += 1) {
       const point = polarToCartesian(50, 50, 34.5, n * 30);
-      const text = createSvgElement('text', { x: point.x, y: point.y + 0.7, 'text-anchor': 'middle', 'dominant-baseline': 'middle', 'font-family': 'system-ui, sans-serif', 'font-size': 10, 'font-weight': 800, fill: '#000' });
+      const text = createSvgElement('text', { x: point.x, y: point.y + 0.7, 'text-anchor': 'middle', 'dominant-baseline': 'middle', 'font-family': options.fontFamily || defaults.fontFamily, 'font-size': Number(options.numeralSize) || 10, 'font-weight': 800, fill: '#000' });
       text.textContent = String(n);
       svg.append(text);
     }
@@ -261,11 +293,11 @@ function createClockSvg(hour, minute, options = {}) {
 
   const hourAngleDegrees = ((hour % 12) + minute / 60) * 30;
   const minuteAngleDegrees = minute * 6;
-  const hourEnd = polarToCartesian(50, 50, 26, hourAngleDegrees);
-  const minuteEnd = polarToCartesian(50, 50, 36, minuteAngleDegrees);
-  svg.append(createSvgElement('line', { x1: 50, y1: 50, x2: hourEnd.x, y2: hourEnd.y, stroke: '#000', 'stroke-width': 6, 'stroke-linecap': 'round' }));
-  svg.append(createSvgElement('line', { x1: 50, y1: 50, x2: minuteEnd.x, y2: minuteEnd.y, stroke: '#000', 'stroke-width': 4, 'stroke-linecap': 'round' }));
-  svg.append(createSvgElement('circle', { cx: 50, cy: 50, r: 4, fill: '#000' }));
+  const hourEnd = polarToCartesian(50, 50, Number(options.hourHandLength) || 26, hourAngleDegrees);
+  const minuteEnd = polarToCartesian(50, 50, Number(options.minuteHandLength) || 36, minuteAngleDegrees);
+  svg.append(createSvgElement('line', { x1: 50, y1: 50, x2: hourEnd.x, y2: hourEnd.y, stroke: '#000', 'stroke-width': Number(options.hourHandWidth) || 6, 'stroke-linecap': 'round' }));
+  svg.append(createSvgElement('line', { x1: 50, y1: 50, x2: minuteEnd.x, y2: minuteEnd.y, stroke: '#000', 'stroke-width': Number(options.minuteHandWidth) || 4, 'stroke-linecap': 'round' }));
+  svg.append(createSvgElement('circle', { cx: 50, cy: 50, r: Number(options.centerDotSize) || 4, fill: '#000' }));
   return svg;
 }
 
@@ -288,9 +320,17 @@ function applySettingsToCss() {
   document.documentElement.style.setProperty('--clock-size', `${els.clockSize.value}in`);
   document.documentElement.style.setProperty('--time-font-size', `${els.timeFontSize.value}px`);
   document.documentElement.style.setProperty('--activity-font-size', `${els.activityFontSize.value}px`);
+  document.documentElement.style.setProperty('--site-font', els.fontFamily.value);
   els.clockSizeValue.textContent = `${Number(els.clockSize.value).toFixed(2)}in`;
   els.timeFontSizeValue.textContent = `${els.timeFontSize.value}px`;
-  els.activityFontSizeValue.textContent = `${els.activityFontSize.value}px`; 
+  els.activityFontSizeValue.textContent = `${els.activityFontSize.value}px`;
+  els.outerStrokeWidthValue.textContent = els.outerStrokeWidth.value;
+  els.hourHandWidthValue.textContent = els.hourHandWidth.value;
+  els.minuteHandWidthValue.textContent = els.minuteHandWidth.value;
+  els.hourHandLengthValue.textContent = els.hourHandLength.value;
+  els.minuteHandLengthValue.textContent = els.minuteHandLength.value;
+  els.numeralSizeValue.textContent = els.numeralSize.value;
+  els.centerDotSizeValue.textContent = els.centerDotSize.value;
 }
 
 function showErrors(errors, count = currentItems.length) {

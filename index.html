@@ -92,6 +92,39 @@
           <label class="check-label"><input id="showEnteredAmPm" type="checkbox"> Show AM/PM if entered</label>
           <label class="check-label"><input id="forceAmPm" type="checkbox"> Force AM/PM labels</label>
           <p class="hint">Force AM/PM labels requires accurate AM/PM input. Lines without AM/PM are marked so you can fix them.</p>
+          <label for="fontFamily">Font family</label>
+          <select id="fontFamily">
+            <option value="Garamond, Georgia, serif">Garamond</option>
+            <option value="Georgia, serif">Georgia</option>
+            <option value="'Times New Roman', Times, serif">Times New Roman</option>
+            <option value="Arial, Helvetica, sans-serif">Arial</option>
+            <option value="Verdana, Geneva, sans-serif">Verdana</option>
+            <option value="'Trebuchet MS', Helvetica, sans-serif">Trebuchet MS</option>
+            <option value="Tahoma, Geneva, sans-serif">Tahoma</option>
+            <option value="'Courier New', Courier, monospace">Courier New</option>
+          </select>
+
+          <label for="outerStrokeWidth">Clock outline width: <span id="outerStrokeWidthValue">3.5</span></label>
+          <input id="outerStrokeWidth" type="range" min="2" max="6" step="0.5" value="3.5">
+
+          <label for="hourHandWidth">Hour hand width: <span id="hourHandWidthValue">6</span></label>
+          <input id="hourHandWidth" type="range" min="3" max="9" step="0.5" value="6">
+
+          <label for="minuteHandWidth">Minute hand width: <span id="minuteHandWidthValue">4</span></label>
+          <input id="minuteHandWidth" type="range" min="2" max="7" step="0.5" value="4">
+
+          <label for="hourHandLength">Hour hand length: <span id="hourHandLengthValue">26</span></label>
+          <input id="hourHandLength" type="range" min="20" max="32" step="1" value="26">
+
+          <label for="minuteHandLength">Minute hand length: <span id="minuteHandLengthValue">36</span></label>
+          <input id="minuteHandLength" type="range" min="30" max="40" step="1" value="36">
+
+          <label for="numeralSize">Clock number size: <span id="numeralSizeValue">10</span></label>
+          <input id="numeralSize" type="range" min="8" max="14" step="1" value="10">
+
+          <label for="centerDotSize">Center dot size: <span id="centerDotSizeValue">4</span></label>
+          <input id="centerDotSize" type="range" min="2" max="6" step="0.5" value="4">
+          <p class="hint">Use these to match nearby curriculum materials while keeping the clock black-and-white and mathematically accurate.</p>
         </fieldset>
       </details>
 
