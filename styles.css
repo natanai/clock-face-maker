@@ -1,0 +1,85 @@
+:root {
+  --card-width: 3.5in;
+  --card-height: 1.25in;
+  --clock-size: 0.82in;
+  --time-font-size: 30px;
+  --activity-font-size: 11px;
+  --site-font: Garamond, Georgia, serif;
+  --columns: 2;
+  --card-gap: 0.12in;
+  --ink: #111;
+  --paper: #fff;
+  --muted: #555;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); background: #e9ecef; font-family: var(--site-font); line-height: 1.45; }
+.site-header, .site-footer { padding: 1.25rem clamp(1rem, 3vw, 2rem); background: var(--paper); border-bottom: 2px solid #d0d0d0; }
+.site-footer { border-top: 2px solid #d0d0d0; border-bottom: 0; }
+h1, h2 { margin: 0 0 .35rem; line-height: 1.1; }
+p { margin: 0 0 1rem; }
+.app-shell { display: grid; grid-template-columns: minmax(19rem, 25rem) minmax(0, 1fr); gap: 1rem; padding: 1rem; align-items: start; }
+.controls-panel, .preview-panel { background: var(--paper); border: 1px solid #c8c8c8; border-radius: .5rem; padding: 1rem; box-shadow: 0 1px 2px rgb(0 0 0 / .08); }
+.controls-panel { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow: auto; }
+.instructions, .hint { color: var(--muted); font-size: .95rem; }
+label, legend { display: block; font-weight: 700; margin: .75rem 0 .25rem; }
+textarea, select, input[type="range"] { width: 100%; font: inherit; }
+textarea, select { border: 2px solid #777; border-radius: .3rem; padding: .5rem; background: #fff; color: #111; }
+textarea { min-height: 12rem; resize: vertical; }
+fieldset { border: 1px solid #aaa; border-radius: .4rem; margin: 1rem 0 0; padding: .75rem; }
+summary { margin-top: 1rem; cursor: pointer; font-weight: 800; padding: .7rem; border: 2px solid #555; border-radius: .4rem; background: #f7f7f7; }
+.check-label { display: flex; gap: .5rem; align-items: start; font-weight: 600; margin: .5rem 0; }
+.two-column-controls { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.button-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+button { border: 2px solid #111; border-radius: .35rem; background: #111; color: #fff; font: 700 1rem var(--site-font); padding: .6rem .8rem; cursor: pointer; }
+button.secondary-button { background: #fff; color: #111; }
+button:focus-visible, textarea:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid #005fcc; outline-offset: 2px; }
+.messages { margin-top: 1rem; font-weight: 700; }
+.messages ul { margin: .5rem 0 0; padding-left: 1.25rem; font-weight: 500; }
+.preview-panel { overflow: auto; }
+.print-surface { min-width: min-content; background: #fff; padding: .35in; border: 1px solid #bbb; }
+.cards-grid { display: grid; grid-template-columns: repeat(var(--columns), var(--card-width)); gap: var(--card-gap); align-items: start; }
+.clock-card { width: var(--card-width); height: var(--card-height); background: #fff; color: #000; display: flex; align-items: center; justify-content: center; gap: .13in; padding: .08in .12in; break-inside: avoid; break-inside: avoid-page; page-break-inside: avoid; position: relative; overflow: hidden; contain: layout paint; }
+.clock-card.edge-cut { outline: 1px dashed #777; outline-offset: -2px; }
+.clock-card.edge-border { border: 1.5px solid #111; }
+.clock-wrapper { width: var(--clock-size); height: var(--clock-size); flex: 0 0 var(--clock-size); display: grid; place-items: center; break-inside: avoid; }
+.clock-wrapper svg { width: 100%; height: 100%; display: block; flex: none; }
+.time-block { min-width: 0; max-width: calc(var(--card-width) - var(--clock-size) - .35in); display: grid; grid-template-rows: 1fr auto 1fr; align-self: stretch; align-items: center; overflow: hidden; }
+.activity { grid-row: 1; align-self: end; font-size: var(--activity-font-size); line-height: 1.1; font-weight: 700; text-align: center; overflow-wrap: anywhere; max-height: calc(var(--activity-font-size) * 2.3); overflow: hidden; }
+.digital-time { grid-row: 2; font-weight: 900; font-size: var(--time-font-size); line-height: 1; letter-spacing: .01em; text-align: center; white-space: nowrap; }
+.clock-card.no-activity .time-block { display: flex; align-items: center; align-self: center; }
+.clock-card.layout-stack { flex-direction: column; gap: .04in; padding: .06in; }
+.layout-stack .time-block { align-self: center; display: block; max-width: calc(var(--card-width) - .15in); }
+.layout-stack .activity { margin-bottom: .03in; }
+.layout-stack .digital-time { font-size: min(var(--time-font-size), 32px); }
+.layout-clock-only .time-block, .layout-time-only .clock-wrapper { display: none; }
+.layout-time-only .digital-time { font-size: calc(var(--time-font-size) + 4px); }
+.layout-time-only .time-block { display: flex; align-items: center; align-self: center; max-width: calc(var(--card-width) - .15in); }
+
+@media (max-width: 900px) {
+  .app-shell { grid-template-columns: 1fr; padding: .75rem; }
+  .controls-panel { position: static; max-height: none; }
+  .primary-actions { position: sticky; bottom: 0; z-index: 2; background: #fff; padding: .65rem 0; border-top: 1px solid #ddd; }
+  .preview-panel { padding: .75rem; }
+  .print-surface { max-width: 100%; overflow: auto; padding: .2in; }
+}
+
+@media (max-width: 520px) {
+  .site-header, .site-footer { padding: 1rem; }
+  .app-shell { padding: .5rem; }
+  .controls-panel, .preview-panel { border-radius: .35rem; padding: .75rem; }
+  .two-column-controls { grid-template-columns: 1fr; gap: 0; }
+  .button-row { display: grid; grid-template-columns: 1fr; }
+  button { width: 100%; }
+}
+
+@page { size: letter portrait; margin: 0.35in; }
+@media print {
+  :root { --ink: #000; --paper: #fff; }
+  body { background: #fff; }
+  .site-header, .site-footer, .controls-panel, .preview-header { display: none !important; }
+  .app-shell, .preview-panel, .print-surface { display: block; padding: 0; margin: 0; border: 0; box-shadow: none; overflow: visible; }
+  .cards-grid { gap: var(--card-gap); align-items: start; }
+  .clock-card { color: #000; background: #fff; break-inside: avoid-page; page-break-inside: avoid; -webkit-column-break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .clock-wrapper, .time-block, .clock-wrapper svg { break-inside: avoid; page-break-inside: avoid; }
+}
