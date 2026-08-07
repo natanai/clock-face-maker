@@ -184,6 +184,11 @@ function parseScheduleInput(text) {
     if (!line) return;
     const parsed = parseLine(line);
     if (parsed.error) {
+      if (items.length && !/\b\d{1,2}:\d{1,2}\b/.test(line)) {
+        const previous = items[items.length - 1];
+        previous.activity = [previous.activity, line].filter(Boolean).join(' ');
+        return;
+      }
       errors.push(`Line ${index + 1}: ${parsed.error}`);
       return;
     }
@@ -193,9 +198,23 @@ function parseScheduleInput(text) {
 }
 
 function parseLine(line) {
+  const timeToken = '(?:[01]?\\d|2[0-3]):[0-5]?\\d\\s*(?:[AaPp]\\.?[Mm]\\.?)?';
+  const rangeAtStart = new RegExp(`^(${timeToken})\\s*(?:-|–|—)\\s*(${timeToken})\\s+(.+)$`);
+  const rangeMatch = line.match(rangeAtStart);
+  if (rangeMatch) {
+    const rawTime = rangeMatch[1].trim();
+    const rangeEndTime = rangeMatch[2].trim();
+    const activity = rangeMatch[3].trim();
+    const parsedTime = parseTime(rawTime);
+    if (parsedTime.error) return { error: parsedTime.error };
+    const parsedEndTime = parseTime(rangeEndTime);
+    if (parsedEndTime.error) return { error: parsedEndTime.error };
+    return { item: { activity, rawTime, rangeEndTime, ...parsedTime } };
+  }
+
   const timeAtEnd = /(.*?)(?:\s*(?:\||-|—)\s*)?((?:[01]?\d|2[0-3]):[0-5]?\d\s*(?:[AaPp]\.?[Mm]\.?)?)$/;
   const match = line.match(timeAtEnd);
-  if (!match) return { error: `Could not find a valid time in “${line}”. Use formats like 7:00, Arrival 7:00, or Arrival - 7:00.` };
+  if (!match) return { error: `Could not find a valid time in “${line}”. Use formats like 7:00, Arrival 7:00, Arrival - 7:00, or 7:00 - 8:25 Arrival.` };
   const activity = match[1].replace(/[|—-]\s*$/, '').trim();
   const rawTime = match[2].trim();
   const parsedTime = parseTime(rawTime);
