@@ -22,6 +22,22 @@ const CARD_SIZES = {
   small: { width: '3.0in', height: '1.0in' },
   medium: { width: '3.5in', height: '1.25in' },
   large: { width: '4.0in', height: '1.5in' },
+  'half-page': {
+    width: '8.5in',
+    height: '5.5in',
+    fixedColumns: '1',
+    gap: '0in',
+    printOrientation: 'portrait',
+    pageMargin: '0in',
+  },
+  'full-page': {
+    width: '11in',
+    height: '8.5in',
+    fixedColumns: '1',
+    gap: '0in',
+    printOrientation: 'landscape',
+    pageMargin: '0in',
+  },
 };
 
 const defaults = {
@@ -333,9 +349,13 @@ function createSvgElement(tag, attrs) {
 
 function applySettingsToCss() {
   const size = CARD_SIZES[els.cardSize.value] || CARD_SIZES.medium;
+  const effectiveColumns = size.fixedColumns || els.columns.value;
+  const cardGap = size.gap || '0.12in';
+  document.documentElement.dataset.cardSize = els.cardSize.value;
   document.documentElement.style.setProperty('--card-width', size.width);
   document.documentElement.style.setProperty('--card-height', size.height);
-  document.documentElement.style.setProperty('--columns', els.columns.value);
+  document.documentElement.style.setProperty('--columns', effectiveColumns);
+  document.documentElement.style.setProperty('--card-gap', cardGap);
   document.documentElement.style.setProperty('--clock-size', `${els.clockSize.value}in`);
   document.documentElement.style.setProperty('--time-font-size', `${els.timeFontSize.value}px`);
   document.documentElement.style.setProperty('--activity-font-size', `${els.activityFontSize.value}px`);
@@ -350,6 +370,19 @@ function applySettingsToCss() {
   els.minuteHandLengthValue.textContent = els.minuteHandLength.value;
   els.numeralSizeValue.textContent = els.numeralSize.value;
   els.centerDotSizeValue.textContent = els.centerDotSize.value;
+  applyPrintPageStyle(size);
+}
+
+function applyPrintPageStyle(size) {
+  let style = document.getElementById('dynamicPageStyle');
+  if (!style) {
+    style = document.createElement('style');
+    style.id = 'dynamicPageStyle';
+    document.head.append(style);
+  }
+  const orientation = size.printOrientation || 'portrait';
+  const margin = size.pageMargin || '0.35in';
+  style.textContent = `@page { size: letter ${orientation}; margin: ${margin}; }`;
 }
 
 function showErrors(errors, count = currentItems.length) {
