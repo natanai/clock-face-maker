@@ -51,7 +51,7 @@ button:focus-visible, textarea:focus-visible, select:focus-visible, input:focus-
 .clock-card.layout-stack { flex-direction: column; gap: .04in; padding: .06in; }
 .layout-stack .time-block { align-self: center; display: block; max-width: calc(var(--card-width) - .15in); }
 .layout-stack .activity { margin-bottom: .03in; }
-.layout-stack .digital-time { font-size: min(var(--time-font-size), 32px); }
+.layout-stack .digital-time { font-size: var(--time-font-size); }
 .layout-clock-only .time-block, .layout-time-only .clock-wrapper { display: none; }
 .layout-time-only .digital-time { font-size: calc(var(--time-font-size) + 4px); }
 .layout-time-only .time-block { display: flex; align-items: center; align-self: center; max-width: calc(var(--card-width) - .15in); }
@@ -82,4 +82,14 @@ button:focus-visible, textarea:focus-visible, select:focus-visible, input:focus-
   .cards-grid { gap: var(--card-gap); align-items: start; }
   .clock-card { color: #000; background: #fff; break-inside: avoid-page; page-break-inside: avoid; -webkit-column-break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .clock-wrapper, .time-block, .clock-wrapper svg { break-inside: avoid; page-break-inside: avoid; }
+
+  html[data-card-size="half-page"] .cards-grid,
+  html[data-card-size="full-page"] .cards-grid { display: block; }
+
+  html[data-card-size="half-page"] .clock-card { margin: 0; }
+  html[data-card-size="half-page"] .clock-card:nth-child(even) { break-after: page; page-break-after: always; }
+  html[data-card-size="half-page"] .clock-card:last-child { break-after: auto; page-break-after: auto; }
+
+  html[data-card-size="full-page"] .clock-card { margin: 0; break-after: page; page-break-after: always; }
+  html[data-card-size="full-page"] .clock-card:last-child { break-after: auto; page-break-after: auto; }
 }
