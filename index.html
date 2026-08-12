@@ -20,11 +20,11 @@
   <main class="app-shell">
     <section class="controls-panel" aria-labelledby="controls-title">
       <h2 id="controls-title">Make clock cards</h2>
-      <p class="instructions">Type one schedule item per line. Use <strong>Activity 7:00</strong>, <strong>Activity - 7:00</strong>, or just <strong>7:00</strong>. The divider is optional.</p>
+      <p class="instructions">Type one schedule item per line. Use <strong>Activity 7:00</strong>, <strong>Activity - 7:00</strong>, <strong>7:00 - 8:25 Activity</strong>, or just <strong>7:00</strong>.</p>
 
       <label for="scheduleInput">Schedule items</label>
       <textarea id="scheduleInput" rows="12" spellcheck="false" aria-describedby="scheduleHelp"></textarea>
-      <p id="scheduleHelp" class="hint">Examples: Arrival 7:00, Breakfast - 8:30, Choice Time 9:00, or 10:15 AM.</p>
+      <p id="scheduleHelp" class="hint">Examples: Arrival 7:00, Breakfast - 8:30, 9:00 - 9:30 Morning Meeting, or 10:15 AM.</p>
 
       <div class="button-row primary-actions" aria-label="Main actions">
         <button type="button" id="generateButton">Generate Cards</button>
@@ -41,6 +41,8 @@
               <option value="small">Small: 3.0in × 1.0in</option>
               <option value="medium">Medium: 3.5in × 1.25in</option>
               <option value="large">Large: 4.0in × 1.5in</option>
+              <option value="half-page">Half sheet: 2 per Letter page (portrait)</option>
+              <option value="full-page">Full sheet: 1 per Letter page (landscape)</option>
             </select>
           </div>
           <div>
@@ -52,6 +54,7 @@
             </select>
           </div>
         </div>
+        <p class="hint">Half-sheet and full-sheet presets automatically use one card across the page. Half sheet prints two cards on each portrait Letter page; full sheet prints one card on each landscape Letter page.</p>
 
         <label for="layout">Card style</label>
         <select id="layout">
@@ -72,14 +75,14 @@
       <fieldset>
         <legend>Readable sizing</legend>
         <label for="clockSize">Clock size: <span id="clockSizeValue">0.82in</span></label>
-        <input id="clockSize" type="range" min="0.6" max="1.2" step="0.01" value="0.82">
+        <input id="clockSize" type="range" min="0.6" max="7.5" step="0.05" value="0.82">
 
         <label for="timeFontSize">Time font size: <span id="timeFontSizeValue">30px</span></label>
-        <input id="timeFontSize" type="range" min="20" max="42" step="1" value="30">
+        <input id="timeFontSize" type="range" min="20" max="144" step="1" value="30">
 
         <label for="activityFontSize">Activity font size: <span id="activityFontSizeValue">11px</span></label>
-        <input id="activityFontSize" type="range" min="8" max="16" step="1" value="11">
-        <p class="hint">Cards keep overflow hidden so larger text stays inside each printed label. If text is clipped, choose a larger card or smaller font.</p>
+        <input id="activityFontSize" type="range" min="8" max="60" step="1" value="11">
+        <p class="hint">The larger ranges let you scale the clock and text for half-sheet and full-sheet cards. Cards keep overflow hidden; if anything is clipped, reduce the clock or font size until the preview fits.</p>
       </fieldset>
 
       <details class="advanced-settings">
